@@ -1,5 +1,7 @@
 package com.apps.stenofh.geofencesexample;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private GoogleApiClient mGoogleApiClient;
     private List<Geofence> mGeofenceList;
+    private PendingIntent mGeofencePendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // specifying geofences triggers
         GeofencingRequest geofencingRequest = getGeofencingRequest();
 
+        // defining an intent for geofence transitions
+        PendingIntent pendingIntent = getGeofencePendingIntent();
+
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        if (mGeofencePendingIntent != null) {
+            return mGeofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        mGeofencePendingIntent = PendingIntent.getService(this, 0,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return mGeofencePendingIntent;
     }
 
     private GeofencingRequest getGeofencingRequest() {
