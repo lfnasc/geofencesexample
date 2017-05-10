@@ -36,7 +36,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
     }
 
     public GeofenceTransitionsIntentService() {
-        super("GeofencesEampleService");
+        super("GeofencesExampleService");
     }
 
     @Override
@@ -76,8 +76,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
         // building a notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Geofence close!")
-                .setContentText("You are near of a geofence of interest!");
+                .setContentTitle("Geofence found!")
+                .setContentText("You are near of a geofence of interest!")
+                .setAutoCancel(true);
 
         // creating a explicit intent
         Intent resultIntent = new Intent(this, GeofenceActivity.class);
