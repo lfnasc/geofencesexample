@@ -35,8 +35,13 @@ public class GeofenceTransitionsIntentService extends IntentService {
         super(name);
     }
 
+    public GeofenceTransitionsIntentService() {
+        super("GeofencesEampleService");
+    }
+
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        Log.i(TAG, "Transition found!!");
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
 

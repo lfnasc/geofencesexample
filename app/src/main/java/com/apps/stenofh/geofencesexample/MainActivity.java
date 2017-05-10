@@ -28,15 +28,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     /***
      *
      * placeholders points
-     * -3.095049, -59.995185
-     * -3.094489, -59.995712
-     * -3.096849, -59.992190
-     * -3.092792, -59.997341
-     * -3.093772, -59.993252
-     * -3.015206, -59.958409
+     * -3.095049, -59.995185 av via lactea
+     * -3.094489, -59.995712 taberna 88
+     * -3.096849, -59.992190 av andre araujo
+     * -3.092792, -59.997341 av constelacao
+     * -3.093772, -59.993252 av da lua
+     * -3.015206, -59.958409 alfredo nascimento
+     * -3.094955, -59.995193 av via lactea 2
+     * -3.087460, -59.997564 di caputti
+     * -3.103784, -60.013583 manauara shopping
      *
      * */
 
+    public static final long HOUR_IN_MILLISECONDS = 1 * 3600 * 1000;
+    public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS = 24 * HOUR_IN_MILLISECONDS;
+    public static final int GEOFENCE_RADIUS_IN_METERS = 250;
     public static String TAG = "LEO";
 
     private GoogleApiClient mGoogleApiClient;
@@ -73,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void setGeofences() {
-        double[] lat = new double[6];
-        double[] lng = new double[6];
+        double[] lat = new double[9];
+        double[] lng = new double[9];
         mGeofenceList = new ArrayList<>();
 
         lat[0] = -3.095049;
@@ -89,16 +95,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         lng[4] = -59.993252;
         lat[5] = -3.015206;
         lng[5] = -59.958409;
+        lat[6] = -3.094955;
+        lng[6] = -59.995193;
+        lat[7] = -3.087460;
+        lng[7] = -59.997564;
+        lat[8] = -3.103784;
+        lng[8] = -60.013583;
 
-        for (int i = 0; i < 6; i++) {
+
+        for (int i = 0; i < 9; i++) {
             mGeofenceList.add(new Geofence.Builder()
                     .setRequestId("Teste [" + i + "]")
                     .setCircularRegion(
                             lat[i],
                             lng[i],
-                            10
+                            GEOFENCE_RADIUS_IN_METERS
                     )
-                    .setExpirationDuration(30000)
+                    .setExpirationDuration(GEOFENCE_EXPIRATION_IN_MILLISECONDS)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                             Geofence.GEOFENCE_TRANSITION_EXIT)
                     .build()
