@@ -1,5 +1,7 @@
 package com.apps.stenofh.geofencesexample;
 
+import android.*;
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,7 +23,7 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> , ActivityCompat.OnRequestPermissionsResultCallback{
 
     /***
      *
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * -3.096849, -59.992190
      * -3.092792, -59.997341
      * -3.093772, -59.993252
+     * -3.015206, -59.958409
      *
      * */
 
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient mGoogleApiClient;
     private List<Geofence> mGeofenceList;
     private PendingIntent mGeofencePendingIntent;
+
+    private GeofencingRequest geofencingRequest;
+    private PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             return mGeofencePendingIntent;
         }
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-        mGeofencePendingIntent = PendingIntent.getService(this, 0,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mGeofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return mGeofencePendingIntent;
     }
 
@@ -67,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void setGeofences() {
-        double[] lat = new double[5];
-        double[] lng = new double[5];
+        double[] lat = new double[6];
+        double[] lng = new double[6];
         mGeofenceList = new ArrayList<>();
 
         lat[0] = -3.095049;
@@ -81,8 +87,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         lng[3] = -59.997341;
         lat[4] = -3.093772;
         lng[4] = -59.993252;
+        lat[5] = -3.015206;
+        lng[5] = -59.958409;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             mGeofenceList.add(new Geofence.Builder()
                     .setRequestId("Teste [" + i + "]")
                     .setCircularRegion(
@@ -130,17 +138,39 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setGeofences();
 
         // specifying geofences triggers
-        GeofencingRequest geofencingRequest = getGeofencingRequest();
+        geofencingRequest = getGeofencingRequest();
 
         // defining an intent for geofence transitions
-        PendingIntent pendingIntent = getGeofencePendingIntent();
+        pendingIntent = getGeofencePendingIntent();
 
         // adding geofences
-        LocationServices.GeofencingApi.addGeofences(
-                mGoogleApiClient,
-                geofencingRequest,
-                pendingIntent
-        ).setResultCallback(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            Log.i(TAG, "Acces fine location permitted!");
+            LocationServices.GeofencingApi.addGeofences(
+                    mGoogleApiClient,
+                    geofencingRequest,
+                    pendingIntent
+            ).setResultCallback(this);
+        }
+
     }
 
     @Override
