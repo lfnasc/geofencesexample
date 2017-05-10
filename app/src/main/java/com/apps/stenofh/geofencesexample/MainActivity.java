@@ -28,15 +28,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     /***
      *
      * placeholders points
-     * -3.095049, -59.995185 av via lactea
-     * -3.094489, -59.995712 taberna 88
-     * -3.096849, -59.992190 av andre araujo
-     * -3.092792, -59.997341 av constelacao
-     * -3.093772, -59.993252 av da lua
-     * -3.015206, -59.958409 alfredo nascimento
-     * -3.094955, -59.995193 av via lactea 2
-     * -3.087460, -59.997564 di caputti
-     * -3.103784, -60.013583 manauara shopping
+     * [0] -3.095049, -59.995185 av via lactea
+     * [1] -3.094489, -59.995712 taberna 88
+     * [2] -3.096849, -59.992190 av andre araujo
+     * [3] -3.092792, -59.997341 av constelacao
+     * [4] -3.093772, -59.993252 av da lua
+     * [5] -3.015206, -59.958409 alfredo nascimento
+     * [6] -3.094955, -59.995193 av via lactea 2
+     * [7] -3.087460, -59.997564 di caputti
+     * [8] -3.103784, -60.013583 manauara shopping
      *
      * */
 

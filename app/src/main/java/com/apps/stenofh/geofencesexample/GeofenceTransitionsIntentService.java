@@ -63,7 +63,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition, triggeringGeofences);
 
             // sengding notification
-            sendNotification();
+            sendNotification(geofenceTransitionDetails);
 
             Log.i(TAG, geofenceTransitionDetails);
 
@@ -72,7 +72,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
         }
     }
 
-    private void sendNotification() {
+    private void sendNotification(String geofenceTransitionDetails) {
         // building a notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -82,6 +82,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         // creating a explicit intent
         Intent resultIntent = new Intent(this, GeofenceActivity.class);
+        resultIntent.putExtra("geofenceTransitionDetails", geofenceTransitionDetails);
 
         // ensures that navigation backward from the Activity leads out of application to the HomeScreen
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
