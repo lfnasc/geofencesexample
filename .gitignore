@@ -40,7 +40,10 @@ captures/
 *.jks
 
 # idea and others files
-/.idea/libraries
+.idea/libraries
+.idea/.name
+.idea/gradle.xml
+.idea/vcs.xml
 .DS_Store
 /build
 /captures
